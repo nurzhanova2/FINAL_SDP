@@ -1,0 +1,115 @@
+@startuml
+
+class RegistrationManager {
+  - instance: RegistrationManager
+  - students: List<Student>
+  - observers: List<RegistrationObserver>
+  + getInstance(): RegistrationManager
+  + registerStudent(student: Student): void
+  + displayRegisteredStudents(): void
+  + addObserver(observer: RegistrationObserver): void
+  + removeObserver(observer: RegistrationObserver): void
+  + notifyObservers(event: String): void
+}
+
+class Database {
+  - URL: String
+  - USER: String
+  - PASSWORD: String
+  + saveStudent(student: Student): void
+}
+
+class Course {
+  + getName(): String
+}
+
+class ProgrammingCourse {
+  + getName(): String
+}
+
+class DesignCourse {
+  + getName(): String
+}
+
+class CourseFactory {
+  + createCourse(): Course
+}
+
+class ProgrammingCourseFactory {
+  + createCourse(): Course
+}
+
+class DesignCourseFactory {
+  + createCourse(): Course
+}
+
+class Student {
+  + getName(): String
+  + getCourse(): Course
+  + getEmail(): String
+}
+
+class RegularStudent {
+  - name: String
+  - course: Course
+  - email: String
+  + RegularStudent(name: String, course: Course, email: String)
+  + getName(): String
+  + getCourse(): Course
+  + getEmail(): String
+  + toString(): String
+}
+
+class PremiumStudent {
+  - name: String
+  - course: Course
+  - email: String
+  + PremiumStudent(name: String, course: Course, email: String)
+  + getName(): String
+  + getCourse(): Course
+  + getEmail(): String
+  + toString(): String
+}
+
+class StudentFactory {
+  + createStudent(name: String, course: Course, email: String): Student
+}
+
+class RegularStudentFactory {
+  + createStudent(name: String, course: Course, email: String): Student
+}
+
+class PremiumStudentFactory {
+  + createStudent(name: String, course: Course, email: String): Student
+}
+
+class StudentBuilder {
+  - name: String
+  - course: Course
+  - email: String
+  - isPremium: boolean
+  + setName(name: String): StudentBuilder
+  + setCourse(course: Course): StudentBuilder
+  + setEmail(email: String): StudentBuilder
+  + setIsPremium(isPremium: boolean): StudentBuilder
+  + build(): Student
+}
+
+RegistrationManager --> Student : Manages
+RegistrationManager --> RegistrationObserver : Notifies
+Course <|-- ProgrammingCourse
+Course <|-- DesignCourse
+CourseFactory <|-- ProgrammingCourseFactory
+CourseFactory <|-- DesignCourseFactory
+Student -- Course : Takes
+Student -- RegularStudent : Inherits
+Student -- PremiumStudent : Inherits
+StudentFactory <|-- RegularStudentFactory
+StudentFactory <|-- PremiumStudentFactory
+StudentBuilder -- Student : Builds
+Database --> Student : Persists
+
+
+
+@enduml
+
